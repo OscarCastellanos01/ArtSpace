@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -21,12 +22,17 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
@@ -54,6 +60,18 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun ArtSpaceApp(modifier: Modifier = Modifier) {
+    var changeImage by remember { mutableIntStateOf(1) }
+
+    val image = when(changeImage) {
+        1 -> R.drawable.pexels_01
+        2 -> R.drawable.pexels_02
+        3 -> R.drawable.pexels_03
+        4 -> R.drawable.pexels_04
+        5 -> R.drawable.pexels_05
+        6 -> R.drawable.pexels_06
+        else -> R.drawable.pexels_07
+    }
+
     Column(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -69,7 +87,7 @@ fun ArtSpaceApp(modifier: Modifier = Modifier) {
             color = Color.White
         ) {
             Image(
-                painter = painterResource(R.drawable.pexels_03),
+                painter = painterResource(image),
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier.padding(32.dp)
@@ -117,6 +135,10 @@ fun ArtSpaceApp(modifier: Modifier = Modifier) {
                 },
                 fontSize = 16.sp
             )
+            Spacer(modifier = Modifier.height(4.dp))
+            Text(
+                text = "$changeImage of 7"
+            )
         }
 
         Spacer(modifier = Modifier.height(24.dp))
@@ -127,21 +149,43 @@ fun ArtSpaceApp(modifier: Modifier = Modifier) {
                 .padding(horizontal = 16.dp),
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
-            Button(
-                onClick = { /* TODO: Previous */ }
-            ) {
-                Text(
-                    text = "Previous"
-                )
-            }
-            Button(
-                onClick = { /* TODO: Next */ }
-            ) {
-                Text(
-                    text = "Next"
-                )
-            }
+            ButtonItem(
+                text = R.string.previous_btn_text,
+                onClick = {
+                    if (changeImage > 1) {
+                        changeImage--
+                    } else {
+                        changeImage = 7
+                    }
+                }
+            )
+            ButtonItem(
+                text = R.string.next_btn_text,
+                onClick = {
+                    if (changeImage < 7) {
+                        changeImage++
+                    } else {
+                        changeImage = 1
+                    }
+                }
+            )
         }
+    }
+}
+
+@Composable
+fun ButtonItem(
+    @StringRes text: Int,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Button(
+        onClick = onClick,
+        modifier = modifier
+    ) {
+        Text(
+            text = stringResource(text)
+        )
     }
 }
 
