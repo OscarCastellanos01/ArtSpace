@@ -60,9 +60,9 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun ArtSpaceApp(modifier: Modifier = Modifier) {
-    var changeImage by remember { mutableIntStateOf(1) }
+    var valueNumber by remember { mutableIntStateOf(1) }
 
-    val image = when(changeImage) {
+    val image = when(valueNumber) {
         1 -> R.drawable.pexels_01
         2 -> R.drawable.pexels_02
         3 -> R.drawable.pexels_03
@@ -70,6 +70,36 @@ fun ArtSpaceApp(modifier: Modifier = Modifier) {
         5 -> R.drawable.pexels_05
         6 -> R.drawable.pexels_06
         else -> R.drawable.pexels_07
+    }
+
+    val artworkTitle = when(valueNumber) {
+        1 -> R.string.design_title01
+        2 -> R.string.design_title02
+        3 -> R.string.design_title03
+        4 -> R.string.design_title04
+        5 -> R.string.design_title05
+        6 -> R.string.design_title06
+        else -> R.string.design_title07
+    }
+
+    val artworkArtist = when(valueNumber) {
+        1 -> R.string.artist_name01
+        2 -> R.string.artist_name02
+        3 -> R.string.artist_name03
+        4 -> R.string.artist_name04
+        5 -> R.string.artist_name05
+        6 -> R.string.artist_name06
+        else -> R.string.artist_name07
+    }
+
+    val yearArtist = when(valueNumber) {
+        1 -> R.string.year01
+        2 -> R.string.year02
+        3 -> R.string.year03
+        4 -> R.string.year04
+        5 -> R.string.year05
+        6 -> R.string.year06
+        else -> R.string.year07
     }
 
     Column(
@@ -109,7 +139,7 @@ fun ArtSpaceApp(modifier: Modifier = Modifier) {
                 .padding(16.dp)
         ) {
             Text(
-                text = "Artwork Title",
+                text = stringResource(artworkTitle),
                 fontSize = 24.sp,
                 fontWeight = FontWeight.Light
             )
@@ -122,7 +152,7 @@ fun ArtSpaceApp(modifier: Modifier = Modifier) {
                             fontWeight = FontWeight.Bold
                         )
                     ) {
-                        append("Artwork Artist ")
+                        append(stringResource(artworkArtist ) + " ")
                     }
                     withStyle(
                         style = SpanStyle(
@@ -130,14 +160,14 @@ fun ArtSpaceApp(modifier: Modifier = Modifier) {
                             fontWeight = FontWeight.Light
                         )
                     ) {
-                        append("(Year)")
+                        append("("+stringResource(yearArtist)+")")
                     }
                 },
                 fontSize = 16.sp
             )
             Spacer(modifier = Modifier.height(4.dp))
             Text(
-                text = "$changeImage of 7"
+                text = "$valueNumber of 7"
             )
         }
 
@@ -152,20 +182,20 @@ fun ArtSpaceApp(modifier: Modifier = Modifier) {
             ButtonItem(
                 text = R.string.previous_btn_text,
                 onClick = {
-                    if (changeImage > 1) {
-                        changeImage--
+                    if (valueNumber > 1) {
+                        valueNumber--
                     } else {
-                        changeImage = 7
+                        valueNumber = 7
                     }
                 }
             )
             ButtonItem(
                 text = R.string.next_btn_text,
                 onClick = {
-                    if (changeImage < 7) {
-                        changeImage++
+                    if (valueNumber < 7) {
+                        valueNumber++
                     } else {
-                        changeImage = 1
+                        valueNumber = 1
                     }
                 }
             )
